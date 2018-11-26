@@ -1,6 +1,23 @@
+
+
 al crear un nuevo proyecto agregar al mix.exs 
       {:ecto_sql, "~> 3.0-rc.1"}
  para el manejo de postgres y verificar los datos de connexion de la base de datos
+ 
+ para aseguurar que el usuario esta bien
+sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+ sudo service postgresql restart
+sudo -u postgres psql
+
+
+poner en los config/dev.ex y test.exs la sig linea debajjo de la configuracion
+ template: "template0",
+
+mix ecto.create
+mix phoenix.server
+
+falta instalar node, por eso no hay javascripts
+
 
 <%= %> significa que reemplazaremos html
 los ex se compilan para la maquina virtual, los exs no
