@@ -1,0 +1,17 @@
+al crear un nuevo proyecto agregar al mix.exs 
+      {:ecto_sql, "~> 3.0-rc.1"}
+ para el manejo de postgres y verificar los datos de connexion de la base de datos
+
+<%= %> significa que reemplazaremos html
+los ex se compilan para la maquina virtual, los exs no
+
+el archivo prod.secret.exs no se agrega a git!!!
+
+
+
+
+
+
+
+
+
