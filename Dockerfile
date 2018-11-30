@@ -54,4 +54,9 @@ RUN mix local.hex --force && \
   mix local.rebar --force && \
   mix hex.info
 
-WORKDIR /YOUR_APP_FOLDER_NAME
+RUN sudo apt-get install postgresql
+    sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';" \
+    sudo service postgresql restart
+
+
+WORKDIR /projects
