@@ -28,7 +28,7 @@ el archivo prod.secret.exs no se agrega a git!!!
 
 
 
-
+pag 42 en repo
 
 
 
