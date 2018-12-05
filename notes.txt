@@ -25,10 +25,13 @@ los ex se compilan para la maquina virtual, los exs no
 el archivo prod.secret.exs no se agrega a git!!!
 
 
+una vez hardcodeados los usuarios se pueden leer directamente desde iex -S mix
+en el libro en el controlador le falta una e a rumble en Rumble.Web 
+ tambien en el scope del router
 
 
+mix ecto.gen.migration create_user
 
-pag 42 en repo
-
+pagina 71
 
 
