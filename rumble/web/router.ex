@@ -13,11 +13,14 @@ defmodule Rumble.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", Rumble do
-    pipe_through :browser # Use the default browser stack
-
+ scope "/", Rumble do
+    pipe_through :browser
+    #get "/users", UserController, :index
+    #get "/users/:id", UserController, :show
+    #get "/", PageController, :index
     get "/", PageController, :index
-  end
+    resources "/users", UserController, only: [:index, :show, :new, :create]
+end
 
   # Other scopes may use custom stacks.
   # scope "/api", Rumble do
