@@ -32,6 +32,6 @@ en el libro en el controlador le falta una e a rumble en Rumble.Web
 
 mix ecto.gen.migration create_user
 
-pagina 71
+agregar en mix    , :ecto_sql 
 
 
