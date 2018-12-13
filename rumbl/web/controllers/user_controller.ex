@@ -1,7 +1,8 @@
 defmodule Rumbl.UserController do
   use Rumbl.Web, :controller
-
-  plug :authenticate when action in [:index, :show]
+  #movimos authenticate a auth para compartirlo
+  #y le cambiams el nombre
+  plug :authenticate_user when action in [:index, :show]
   
   alias Rumbl.User
 
@@ -37,16 +38,16 @@ defmodule Rumbl.UserController do
     end
   end
 
-  defp authenticate(conn, _opts) do
-    if conn.assigns.current_user do
-      conn
-    else
-      conn
-      |> put_flash(:error, "You must be logged in to access that page")
-      |> redirect(to: page_path(conn, :index))
-      |> halt()
-    end
-  end
+  # defp authenticate(conn, _opts) do
+  #   if conn.assigns.current_user do
+  #     conn
+  #   else
+  #     conn
+  #     |> put_flash(:error, "You must be logged in to access that page")
+  #     |> redirect(to: page_path(conn, :index))
+  #     |> halt()
+  #   end
+  # end
 
 
 end
