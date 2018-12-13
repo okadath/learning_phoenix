@@ -34,4 +34,14 @@ mix ecto.gen.migration create_user
 
 agregar en mix    , :ecto_sql 
 
+todos los controladores inician con rumble, para que el router los halle, 
+ademas del rumble.web, pero lo demas va sin e :vv
+
+si generas a mano:
+mix ecto.create
+#crear la descripcion de tu modelo y luego:
+mix ecto.gen.migration create_user
+#luego editas tu migracion y la migras
+mix ecto.migrate
+mix phoenix.server
 
