@@ -40,7 +40,27 @@ el error del map :
 
 
 
+si el formulario no ocupa changeset(si no modifica info) entonces en ves de pasarselo le pasamos directamente el conn,generalmente en logins y busquedas
 
+<%= form_for @conn, session_path(@conn, :create), [as: :session], fn f -> %>
+
+
+por conn.assigns.current_user @current_user esta presente en todas las vistas 
+
+link "Log out",
+to:
+session_path(@conn, :delete, @current_user),
+method: "delete"
+The link:
+• Has the text Log out
+• Links to the session_path path with the @conn connection, the :delete action,
+and the @current_user argument
+• Uses the HTTP delete method
+
+
+en el logout en auth.delete si se quiere eliminar el id del usuario pero no la sesion se sustituye con
+
+delete_session(conn, :user_id) .
 
 
 
