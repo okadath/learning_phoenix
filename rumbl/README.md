@@ -63,4 +63,47 @@ en el logout en auth.delete si se quiere eliminar el id del usuario pero no la s
 delete_session(conn, :user_id) .
 
 
+#=======scaffold:
+
+
+mix phoenix.gen.html nombre_modelo plural_modelo campos
+
+mix phoenix.gen.html Video videos user_id:references:users 
+url:string title:string description:text
+
+se deben hacer modificaciones en la autenticacion en el modelo de usuarios
+y crear un nuevo scope en el router
+
+despues de scaffoldear los videos migrar 
+mix ecto.migrate
+
+y modificar  user con has_many :videos, Rumbl.Video
+
+
+para poder accedes a la info:
+
+alias Rumbl.Repo
+alias Rumbl.User
+import Ecto.Query
+
+asi los cargamos
+user = Repo.get_by!(User, username: "josevalim")
+user = Repo.preload(user, :videos)
+user.videos
+
+asi creamos uno nuevo
+user = Repo.get_by!(User, username: "josevalim")
+attrs = %{title: "hi", description: "says hi", url: "example.com"}
+video = Ecto.build_assoc(user, :videos, attrs)
+video = Repo.insert!(video)
+
+asi obtenemos todos los de un usuario
+
+query = Ecto.assoc(user, :videos)
+Repo.all(query)
+
+casi todas las modificaciones se hacen en el nuevo video_controller, para acoplarse a todo lo anterior
+
+
+
 
