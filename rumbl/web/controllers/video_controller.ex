@@ -5,6 +5,12 @@ defmodule Rumbl.VideoController do
 #agregado para validar entre nil y espacio en blanco
   plug :scrub_params, "video" when action in [:create, :update]
 
+# plugeando el comportaiento para cargar categorias
+  alias Rumbl.Category
+  plug :load_categories when action in [:new, :create, :edit, :update]
+  
+
+
 #con esto pasamos directamente el usuario logeado por que 
 #lo requerimos mucho
   def action(conn, _) do
@@ -101,4 +107,17 @@ defmodule Rumbl.VideoController do
     |> put_flash(:info, "Video deleted successfully.")
     |> redirect(to: video_path(conn, :index))
   end
+
+#==========================
+#acceso a las categorias
+
+  defp load_categories(conn, _) do
+    query =
+    Category
+    |> Category.alphabetical
+    |> Category.names_and_ids
+    categories = Repo.all query
+    assign(conn, :categories, categories)
+  end
+
 end

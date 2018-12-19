@@ -115,7 +115,30 @@ luego migramos
 	mix ecto.gen.migration add_category_id_to_video
 	mix ecto.migrate
 
+se debe de modificar el archivo de seeds para hardcodear los tipos de categorias, son fijas y luego correr: 
 
+	mix run priv/repo/seeds.exs
 
+querys para solicitar categorias por nombre:
 
+	import Ecto.Query
+	alias Rumbl.Repo
+	alias Rumbl.Category
+	Repo.all from c in Category,
+		select: c.name
+por nombre y ordenadas:
 
+	Repo.all from c in Category,
+	order_by: c.name,
+	select: {c.name, c.id}
+se puede construir paso a paso:	
+
+	query = Category
+	iex> query = from c in query, order_by: c.name
+	iex> query = from c in query, select: {c.name, c.id}
+	iex> Repo.all query
+
+ya con las modificaciones en el modelo categorias
+y el acceso desde videocontroller donde se plugeo el acceso a las categorias las cargamos en los CRUDs que deseemos
+
+lo colocaremos en las vistas edit, new, y form se puede acceder en los htmls agregando @categories de su respectivo modo
