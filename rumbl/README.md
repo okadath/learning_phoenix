@@ -78,12 +78,12 @@ despues de scaffoldear los videos migrar
 y modificar  user con 
 
 	has_many :videos, Rumbl.Video
-para poder accedes a la info:
+para poder acceder a la info:
 
 	alias Rumbl.Repo
 	alias Rumbl.User
 	import Ecto.Query
-asi los cargamos
+asi los cargamos(se debe construir la asociacion cn preload o no jala!!!!!)
 
 	user = Repo.get_by!(User, username: "josevalim")
 	user = Repo.preload(user, :videos)
@@ -142,3 +142,57 @@ ya con las modificaciones en el modelo categorias
 y el acceso desde videocontroller donde se plugeo el acceso a las categorias las cargamos en los CRUDs que deseemos
 
 lo colocaremos en las vistas edit, new, y form se puede acceder en los htmls agregando @categories de su respectivo modo
+
+	import Ecto.Query
+	alias Rumbl.Repo
+	alias Rumbl.User
+	username = "josevalim"
+	Repo.one(from u in User, where: u.username == ^username)
++Repo.one->una fila
++from u in User leera del User schema.
++where: u.username == ^usernamedevolvera la columna  que u.username ==
+^username . el operator ^ (pin operator) mantendremos ^username igual, este es el que queremos comprobar si esta en la DB.
++cuando select  es omitido regresa select: u
+
+Es mas sencillo prevenir SQLinjection ya que las peticiones no son strings encadenados
+
+solo los controladores pueden tener side effects para modificar el ambiente
+leer y escribir datos en un socket(es side effect)
+
+**Tipos de Queries:**
+
++ Keyword Syntax:
+
+	Repo.one from u in User, select: count(u.id), where: ilike(u.username, ^"j%") or ilike(u.username, ^"c%")
+se puede separar:
+
+	users_count = from u in User, select: count(u.id)
+	j_users = from u in users_count, where: ilike(u.username, ^"%j%")
+
++ Pipe Syntax(para aplicaciones complejas, se pude indicar mas de un binding(la u)para hacer querys complejas):
+	
+	User |>
+	select([u], count(u.id)) |>
+	where([u], ilike(u.username, ^"j%") or ilike(u.username, ^"c%")) |>
+	Repo.one()
+
+no comprendo como se usan los query fragments, buscar en su documentacion :/
+
+podemos construir la asociacion al vuelo:
+
+	user = Repo.one from(u in User, limit: 1, preload: [:videos])
+
+o podemos crearla internamente:
+
+	Repo.all from u in User, 
+	join: v in assoc(u, :videos),
+	join: c in assoc(v, :category),
+	where: c.name == "Comedy",
+	select: {u, v}
+
+los constraints permiten manejar y prevenir errores por datos inconsistentes
+
+
+
+
+
