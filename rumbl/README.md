@@ -191,8 +191,7 @@ o podemos crearla internamente:
 	select: {u, v}
 
 los constraints permiten manejar y prevenir errores por datos inconsistentes
-
-
+pero debe ser manejado sengun las necesidades... cualquier duda al manejar bd volver a la pag 124
 
 
 
