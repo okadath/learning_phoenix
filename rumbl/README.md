@@ -1,5 +1,41 @@
 Notas ejecucion:
 ===
+Basico:
+---
+
+**Scaffold:**
+base:
+
+	mix phoenix.gen.html nombre_modelo plural_modelo campos
+ejemplo:
+
+	mix phoenix.gen.html Video videos user_id:references:users 
+	url:string title:string description:text
+
+se deben hacer modificaciones en la autenticacion en el modelo de usuarios
+y crear un nuevo scope en el router
+
+despues de scaffoldear los videos migrar
+
+	mix ecto.migrate
+y modificar  user con 
+
+	has_many :videos, Rumbl.Video
+
+generamos las categorias:
+
+	mix phoenix.gen.model Category categories name:string
+	#agregar a la migracion
+	create unique_index(:categories, [:name])
+	#esto se agrega en  el modelo para asegurar la relacion
+	belongs_to :category, Rumbl.Category
+luego creamos la migracion(solo si modificamos alguna tabla) y migramos, si no solo se migra
+
+	mix ecto.gen.migration add_category_id_to_video
+	mix ecto.migrate
+
+los cambios y modificaciones de informacion se hacen en el changeset
+
 **ORM Elixir:**
 
 desde el iex:
@@ -62,7 +98,7 @@ en el logout en auth.delete si se quiere eliminar el id del usuario pero no la s
 
 	delete_session(conn, :user_id)
 
-**scaffold:**
+**Scaffold:**
 
 	mix phoenix.gen.html nombre_modelo plural_modelo campos
 
@@ -163,18 +199,19 @@ leer y escribir datos en un socket(es side effect)
 
 + Keyword Syntax:
 
-	Repo.one from u in User, select: count(u.id), where: ilike(u.username, ^"j%") or ilike(u.username, ^"c%")
+		Repo.one from u in User, select: count(u.id), where: ilike(u.username, ^"j%") 
+		or ilike(u.username, ^"c%")
 se puede separar:
 
-	users_count = from u in User, select: count(u.id)
-	j_users = from u in users_count, where: ilike(u.username, ^"%j%")
+		users_count = from u in User, select: count(u.id)
+		j_users = from u in users_count, where: ilike(u.username, ^"%j%")
 
 + Pipe Syntax(para aplicaciones complejas, se pude indicar mas de un binding(la u)para hacer querys complejas):
 	
-	User |>
-	select([u], count(u.id)) |>
-	where([u], ilike(u.username, ^"j%") or ilike(u.username, ^"c%")) |>
-	Repo.one()
+		User |>
+		select([u], count(u.id)) |>
+		where([u], ilike(u.username, ^"j%") or ilike(u.username, ^"c%")) |>
+		Repo.one()
 
 no comprendo como se usan los query fragments, buscar en su documentacion :/
 
@@ -182,7 +219,7 @@ podemos construir la asociacion al vuelo:
 
 	user = Repo.one from(u in User, limit: 1, preload: [:videos])
 
-o podemos crearla internamente:
+podemos crearla internamente:
 
 	Repo.all from u in User, 
 	join: v in assoc(u, :videos),
@@ -192,6 +229,55 @@ o podemos crearla internamente:
 
 los constraints permiten manejar y prevenir errores por datos inconsistentes
 pero debe ser manejado sengun las necesidades... cualquier duda al manejar bd volver a la pag 124
+
+**Tests**
+
+uno en especifico:
+
+	mix test test/controllers/page_controller_test.exs:4
+
+crear /rumbl/test/support/test_helpers.ex
+bypassearemos el login para ahorrar logearnos siempre
+
+Parte II
+---
+
+editar las vistas para ver videos
+agregaremos un watch como view y controller, y su vista show para podernos asegurar que el resto del mundo pueda ver cualquier video
+modificamos el router :
+
+	get "/watch/:id", WatchController, :show
+
+para compilar js:
+
+	brunch build
+	brunch build --production
+	brunch watch
+
+para crear jscripts hay que ponderlos en el app o crear nuevos 
+
+**Slugs**
+hacemos una migracion:
+
+	mix ecto.gen.migration add_slug_to_video
+la modificamos
+	
+	alter table(:videos) do
+		add :slug, :string
+	end
+y migramos
+
+	mix ecto.migrate
+
+modificamos el modelo video para que un nuevo campo slug se genere automaticamente en el changeset del modelo
+tambien modificaremos una implementacion de protocolo en el modelo video
+me parece que el to_params modificado es el que proporciona la URI
+
+pero tenemos un problema de casteo con el ID
+en el libro crearon un nuevo tipo para ecto en lib/rumbl/permalink para poder acceder al ID(no entiendo por que no solo castearon o recortaron, lo que sea)
+y lo agregaron como ID automatico para el campo video
+
+**Channels**
 
 
 
