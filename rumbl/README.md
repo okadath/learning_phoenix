@@ -279,5 +279,7 @@ y lo agregaron como ID automatico para el campo video
 
 **Channels**
 
+Se realizaron varias modificaciones a los web/static/js para implementar el cliente desde javascript
 
+los sockets manejan topicos, sobre estos van las conversaciones
 
