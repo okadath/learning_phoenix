@@ -283,3 +283,8 @@ Se realizaron varias modificaciones a los web/static/js para implementar el clie
 
 los sockets manejan topicos, sobre estos van las conversaciones
 
+me parece que lso sockets necesitan red :/
+
+modificamos la plantilla de app para acceder a un token de autenticacion
+
+
