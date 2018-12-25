@@ -279,6 +279,8 @@ y lo agregaron como ID automatico para el campo video
 
 **Channels**
 
+Necesita internetpara cargar la info del video, si no no funcionan los sockets
+
 Se realizaron varias modificaciones a los web/static/js para implementar el cliente desde javascript
 
 los sockets manejan topicos, sobre estos van las conversaciones, creamos sus callbacks en web/channel
@@ -308,9 +310,20 @@ debe ser bien estructurado ya que todos los clientes lo recibiran, NO PASARLO AL
 	broadcast! socket, "new_annotation", 
 	Map.put(params, "user", %{username: "anon"})
 
-modificamos la plantilla de app para acceder a un token de autenticacion
+modificamos la plantilla de app para acceder a un token de autenticacion, modificamos el auth para crear el token al iniciar sesion
+
+cambiams el usertoken y verificamos que se cumpla el lapso de vida del token
 
 
+hacer anotaciones persistentes 189
+creamos su tabla , modificamos el video chanel para manejar los nievos datos
+manejamos la vista del usuario para desplegar la info
+
+modificamos el join del video_channel para acceder a las anotaciones previas
+
+creamos un annotation_view para desplegar cada mensaje individual en json:
+render_one ya valida los nil
+modificamos otra vez e video.js para que maneje los mensajes previos y agregue la hora del mensaje
 
 
 
