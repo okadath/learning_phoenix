@@ -18,9 +18,14 @@ let Video = {
     let vidChannel   = socket.channel("videos:" + videoId)
 
     postButton.addEventListener("click", e => {
-      let payload = {body: msgInput.value, at: Player.getCurrentTime()}
-      vidChannel.push("new_annotation", payload)
-                .receive("error", e => console.log(e) )
+      let payload = {
+        body: msgInput.value, at: Player.getCurrentTime()
+      }
+      
+      vidChannel
+      .push("new_annotation", payload)
+      .receive("error", e => console.log(e) )
+
       msgInput.value = ""
     })
 
@@ -32,7 +37,8 @@ let Video = {
       .receive("ok", resp => console.log("joined the video channel", resp) )
       .receive("error", reason => console.log("join failed", reason) )
   },
-
+  //verifica y previene los ataques XSS
+  //al agregar los elementos directamente en el DOM
   esc(str){ 
     let div = document.createElement("div")
     div.appendChild(document.createTextNode(str))

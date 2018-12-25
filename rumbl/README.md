@@ -281,10 +281,36 @@ y lo agregaron como ID automatico para el campo video
 
 Se realizaron varias modificaciones a los web/static/js para implementar el cliente desde javascript
 
-los sockets manejan topicos, sobre estos van las conversaciones
+los sockets manejan topicos, sobre estos van las conversaciones, creamos sus callbacks en web/channel
 
-me parece que lso sockets necesitan red :/
+el video channel sera el manejador de los eventos del socket
+el user solo los autentica y valida
+
+handle_info callback is invoked whenever an Elixir message reaches the channel.
+handle_in, This function will handle all incoming messages to a channel, pushed directly from the remote client.
+
+	def handle_in("new_annotation", params, socket) do
+	broadcast! socket, "new_annotation", %{
+	user: %{username: "anon"},
+	body: params["body"],
+	at: params["at"]
+	}
+	{:reply, :ok, socket}
+	end
+
+broadcast! manda a todos:
+
+	broadcast! socket,nombre_evento,carga(un mapa)
+
+debe ser bien estructurado ya que todos los clientes lo recibiran, NO PASARLO AL VUELO!!!:
+
+	asi NO:
+	broadcast! socket, "new_annotation", 
+	Map.put(params, "user", %{username: "anon"})
 
 modificamos la plantilla de app para acceder a un token de autenticacion
+
+
+
 
 

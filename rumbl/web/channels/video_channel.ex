@@ -4,7 +4,7 @@ defmodule Rumbl.VideoChannel do
 	def join("videos:" <> video_id, _params, socket) do
 		{:ok, socket}
 	end
-
+ #la funcion a ejecutar desde el socket
 	def handle_in("new_annotation", params, socket) do
 		broadcast! socket, "new_annotation", %{
 			user: %{username: "anon"},
