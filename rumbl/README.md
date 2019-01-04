@@ -326,4 +326,4 @@ render_one ya valida los nil
 modificamos otra vez e video.js para que maneje los mensajes previos y agregue la hora del mensaje
 
 
-
+para evitar desconexiones y mensajes dobles editamos de nuevo el videojs y el video channel para contar el ultimo mensaje visto y asi evitar recargar mensajes ya cargados
